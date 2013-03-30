@@ -27,12 +27,23 @@ def find_greatest_across(greatest, row):
 	print greatest
 	return greatest
 
+def find_greatest_down(matrix):
+	new_matrix = []
+	new_row = []
+	for i, row in enumerate(matrix):
+		new_row.append(row[i])
+		
+
+def find_greatest_diagonal(greatest, matrix):
+	pass
+
 def main(argv):
 	args = sys.argv
 	script, read_file = argv
 	matrix = make_matrix(read_file)
 	greatest = 0
-	for row in matrix:
-		find_greatest_across(greatest, row)
+	find_greatest_down(matrix)
+	#greatest = find_greatest_across(greatest, row)
+	print greatest
 
 main(sys.argv)
