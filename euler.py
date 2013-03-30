@@ -1,17 +1,23 @@
 import sys
-matrix = []
 
 def make_matrix(read_file):
-	input_file = open(read_file)
-	for line in input_file:
-		string_line = (line.split())
-		new_row = []
-		for item in string_line:
-			new_item = int(item)
-			new_row.append(new_item)
-		matrix.append(new_row)
-	input_file.close()
-	return matrix
+	with open(read_file) as input_file:
+		return [[int(i) for i in line.split()] for line in input_file]
+
+
+def products(matrix, length):
+	for i, row in enumerate(matrix):
+		for j, item in enumerate(row):
+			yield reduce(lambda x, y: x * y, row[j:j+length])
+			try:
+				yield reduce(lambda x, y: x * y, [matrix[i + offset][j] for offset in range(length)])
+				yield reduce(lambda x, y: x * y, [matrix[i + offset][j + offset] for offset in range(length)])
+			except IndexError:
+				pass
+			try:
+				yield reduce(lambda x, y: x * y, [matrix[i + offset][j - offset] for offset in range(length)])
+			except IndexError:
+				pass
 
 def find_greatest_across(greatest, row):
 	for i, item in enumerate(row):
@@ -40,10 +46,12 @@ def find_greatest_diagonal(greatest, matrix):
 def main(argv):
 	args = sys.argv
 	script, read_file = argv
-	matrix = make_matrix(read_file)
+	length = 4
+	print max(products(make_matrix(read_file), length))
 	greatest = 0
-	find_greatest_down(matrix)
+
+	#find_greatest_down(matrix)
 	#greatest = find_greatest_across(greatest, row)
-	print greatest
+	#print greatest
 
 main(sys.argv)
